@@ -25,10 +25,36 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Image
         run: |
-            docker build \
-              -t ghcr.io/${{ github.repository_owner }}/app-backend:${{ github.sha }} \
-              ./backend
+          docker build \
+            -t ghcr.io/${{ github.repository_owner }}/app-backend:${{ github.sha }} \
+            ./backend
       - name: Push Image
         run: |
-            docker push \
-              ghcr.io/${{ github.repository_owner }}/app-backend:${{ github.sha }}
+          docker push \
+            ghcr.io/${{ github.repository_owner }}/app-backend:${{ github.sha }}
+  update-gitops:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout GitOps Repository
+        uses: actions/checkout@v4
+        with:
+          repository: dangph12/gitops-app
+          token: ${{ secrets.GITOPS_TOKEN }}
+
+      - name: Update Image
+        run: |
+          sed -i "s|app-backend:.*|app-backend:${{ github.sha }}|" deployment.yaml
+
+      - name: Commit Changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add deployment.yaml
+
+          git commit -m "update app-backend image to ${{ github.sha }}" || exit 0
+
+          git push
