@@ -31,4 +31,4 @@ jobs:
       - name: Push Image
         run: |
             docker push \
-              ghcr.io/${{ github.reposiroty_owner }}/app-backend:${{ github.sha }}
+              ghcr.io/${{ github.repository_owner }}/app-backend:${{ github.sha }}
