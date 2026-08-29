@@ -43,6 +43,7 @@ jobs:
         with:
           repository: dangph12/gitops-app
           token: ${{ secrets.GITOPS_TOKEN }}
+          path: gitops-demo
 
       - name: Update Image Tag
         run: |
