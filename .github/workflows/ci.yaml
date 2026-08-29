@@ -44,7 +44,16 @@ jobs:
           repository: dangph12/gitops-app
           token: ${{ secrets.GITOPS_TOKEN }}
           path: gitops-demo
-
+      - name: Debug Directory Structure
+        run: |
+          echo "Root directory contents:"
+          ls -la
+          echo "---"
+          echo "GitOps repository contents:"
+          ls -la gitops-demo/
+          echo "---"
+          echo "Apps directory contents:"
+          ls -la gitops-demo/apps/gitops-app/
       - name: Update Image Tag
         run: |
           sed -i "s|app-backend:.*|app-backend:${{ github.sha }}|" gitops-demo/apps/gitops-app/deployment.yml
