@@ -44,9 +44,9 @@ jobs:
           repository: dangph12/gitops-app
           token: ${{ secrets.GITOPS_TOKEN }}
 
-      - name: Update Image
+      - name: Update Image Tag
         run: |
-          sed -i "s|app-backend:.*|app-backend:${{ github.sha }}|" deployment.yaml
+          sed -i "s|app-backend:.*|app-backend:34a62b6516b0c2efeba0a54898c0cfd8efc13389|" apps/gitops-app/deployment.yml
 
       - name: Commit Changes
         run: |
